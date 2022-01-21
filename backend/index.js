@@ -1,4 +1,5 @@
 const express = require("express");
+// import express from "express";
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -11,13 +12,32 @@ const postRoute = require("./routes/posts");
 
 dotenv.config();
 
-mongoose.connect(
-    process.env.MONGO_URL,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    () => {
-      console.log("Connected to MongoDB");
-    }
-  );
+// const {MongoClient} = require("mongodb");
+
+process.on("uncaughtException", (err) => {
+  console.log("process err", err);
+  process.exit(1)
+})
+
+async function run () {
+  let db;
+  try {
+    // connection url will throw because password isn't provided
+    db = await mongoose.connect(
+        process.env.MONGO_URL,
+        { useNewUrlParser: true, useUnifiedTopology: true },
+        () => {
+          console.log("Connected to MongoDB");
+        }
+      );
+  } catch (err) {
+    console.log('Exiting from thrown error', err);
+    process.exit(1);
+  }
+}
+run();
+
+
 
 //middleware
 app.use(express.json());
