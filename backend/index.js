@@ -19,17 +19,20 @@ process.on("uncaughtException", (err) => {
   process.exit(1)
 })
 
-async function run () {
+async function run() {
   let db;
   try {
     // connection url will throw because password isn't provided
     db = await mongoose.connect(
-        process.env.MONGO_URL,
-        { useNewUrlParser: true, useUnifiedTopology: true },
-        () => {
-          console.log("Connected to MongoDB");
-        }
-      );
+      process.env.MONGO_URL,
+      { useNewUrlParser: true, useUnifiedTopology: true },
+      () => {
+        console.log("Connected to MongoDB");
+        app.listen(8080,()=>{
+            console.log('Server Started')
+        })
+      }
+    );
   } catch (err) {
     console.log('Exiting from thrown error', err);
     process.exit(1);
@@ -48,6 +51,6 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 
-app.listen(8080,()=>{
-    console.log('Server Started')
-})
+// app.listen(8080,()=>{
+//     console.log('Server Started')
+// })
