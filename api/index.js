@@ -13,6 +13,9 @@ const path = require("path");
 
 dotenv.config();
 
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+
 mongoose.connect(
   process.env.MONGO_URL,
   { useNewUrlParser: true, useUnifiedTopology: true },
@@ -49,6 +52,12 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 
-app.listen(8800, () => {
+// All other GET requests not handled before will return our React app
+app.get('*', function (req, res) {
+  const index = path.join(__dirname, '../client/build', 'index.html');
+  res.sendFile(index);
+});
+
+app.listen(5000, () => {
   console.log("Backend server is running!");
 });
