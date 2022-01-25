@@ -4,20 +4,22 @@
 FROM node:16-alpine
 
 # Install nodemon for hot reloading
-RUN npm install -g nodemon
+# RUN npm install -g nodemon
 
 # Create and set the working directory
-RUN mkdir -p /app/api
-WORKDIR /app/api
+# RUN mkdir -p /api/build
+WORKDIR /api
 
 # Copy the dependency files over
-COPY package*.json /app/api/
+COPY package*.json /api
 
 # Install dependencies
 RUN npm install
 
 # Copy the server files over
-COPY . ./app/api
+COPY . /api
+
+COPY ../client/build /api
 
 EXPOSE 5000
 

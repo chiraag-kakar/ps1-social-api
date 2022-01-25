@@ -1,27 +1,41 @@
 version: '3'
 
 services:
-  client:
-    image: client_image # Name of our service
-    build: ./client # path to dockerfile
-    ports: # Port binding to host from docker container
-      - "4000:4000" # Bind port 3000 of host to 3000 of container
-    container_name: client-docker
-    networks:
-      - ps1-network
-    restart: always # What to do if container crashes
-    links:
-      - api
+    api:
+      build:
+        context: ./api
+        dockerfile: ./Dockerfile
+      ports:
+        - "5000:5000"
+    client:
+      build:
+        context: ./client
+        dockerfile: ./Dockerfile
+      ports:
+        - "4000:4000"
+        
+  # client:
+  #   image: client_image # Name of our service
+  #   build: ./client # path to dockerfile
+  #   ports: # Port binding to host from docker container
+  #     - "4000:4000" # Bind port 3000 of host to 3000 of container
+  #   container_name: client-docker
+  #   networks:
+  #     - ps1-network
+  #   restart: always # What to do if container crashes
+  #   links:
+  #     - api
 
-  api:
-    image: api_image
-    build: ./api
-    ports: 
-      - "5000:5000"
-    container_name: api-docker
-    networks:
-      - ps1-network
-    restart: always
+  # api:
+  #   image: api_image
+  #   build: ./api
+  #   ports: 
+  #     - "5000:5000"
+  #   container_name: api-docker
+  #   networks:
+  #     - ps1-network
+  #   restart: always
+
   #   links: 
   #     - mongo
 
@@ -32,6 +46,6 @@ services:
   #     MONGO_INITDB_ROOT_USERNAME: chiraag
   #     MONGO_INITDB_ROOT_PASSWORD: 12345
 
-networks:
-  ps1-network:
-    driver: bridge
+# networks:
+#   ps1-network:
+#     driver: bridge

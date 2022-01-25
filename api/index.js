@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
@@ -14,7 +15,10 @@ const path = require("path");
 dotenv.config();
 
 // Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+// app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+const path = __dirname + '/build/';
+app.use(express.static(path));
 
 mongoose.connect(
   process.env.MONGO_URL,
@@ -23,7 +27,7 @@ mongoose.connect(
     console.log("Connected to MongoDB");
   }
 );
-app.use("/images", express.static(path.join(__dirname, "public/images")));
+// app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 //middleware
 app.use(express.json());
@@ -53,9 +57,13 @@ app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 
 // All other GET requests not handled before will return our React app
-app.get('*', function (req, res) {
-  const index = path.join(__dirname, '../client/build', 'index.html');
-  res.sendFile(index);
+// app.get('*', function (req, res) {
+//   const index = path.join(__dirname, '../client/build', 'index.html');
+//   res.sendFile(index);
+// });
+
+app.get('*', function (req,res) {
+  res.sendFile(path + "index.html");
 });
 
 app.listen(5000, () => {
