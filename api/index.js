@@ -17,8 +17,8 @@ dotenv.config();
 // Have Node serve the files for our built React app
 // app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-const path = __dirname + '/build/';
-app.use(express.static(path));
+const buildPath = __dirname + '../client/build/';
+app.use(express.static(buildPath));
 
 mongoose.connect(
   process.env.MONGO_URL,
@@ -63,7 +63,7 @@ app.use("/api/posts", postRoute);
 // });
 
 app.get('*', function (req,res) {
-  res.sendFile(path + "index.html");
+  res.sendFile(buildPath + "index.html");
 });
 
 app.listen(5000, () => {
