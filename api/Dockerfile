@@ -19,6 +19,7 @@ RUN npm install
 # Copy the server files over
 COPY . /api
 
+
 EXPOSE 5000
 
 # Command to run them

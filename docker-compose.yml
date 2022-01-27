@@ -7,12 +7,12 @@ services:
         dockerfile: ./Dockerfile
       ports:
         - "5000:5000"
-    client:
-      build:
-        context: ./client
-        dockerfile: ./Dockerfile
-      ports:
-        - "4000:4000"
+    # client:
+    #   build:
+    #     context: ./client
+    #     dockerfile: ./Dockerfile
+    #   ports:
+    #     - "4000:4000"
         
   # client:
   #   image: client_image # Name of our service
