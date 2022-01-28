@@ -56,12 +56,6 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 
-// All other GET requests not handled before will return our React app
-// app.get('*', function (req, res) {
-//   const index = path.join(__dirname, '../client/build', 'index.html');
-//   res.sendFile(index);
-// });
-
 app.get('*', function (req,res) {
   res.sendFile(buildPath + "index.html");
 });
