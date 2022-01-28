@@ -1,31 +1,33 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
-name: CI
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+on: push
+name: npm build, lint, test and publish
 jobs:
-  build:
-
+  build-and-publish:
+    name: build and publish
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-#     - run: npm run build --if-present
-#     - run: npm test
+      - uses: actions/checkout@master
+      - name: npm install
+        uses: actions/npm@master
+        with:
+          args: install
+      # - name: npm test
+      #   uses: actions/npm@master
+      #   with:
+      #     args: run test
+      - name: npm lint
+        uses: actions/npm@master
+        with:
+          args: run lint
+      - name: docker build
+        uses: actions/docker/cli@master
+        with:
+          args: build -t api .
+      - name: docker login
+        uses: actions/docker/login@master
+        env:
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      - name: docker push
+        uses: actions/docker/cli@master
+        with:
+          args: push api
