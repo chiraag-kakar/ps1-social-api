@@ -17,7 +17,7 @@ COPY package*.json api/
 RUN npm install
 
 # Copy the server files over
-COPY . api/
+COPY . /api
 
 
 EXPOSE 5000
