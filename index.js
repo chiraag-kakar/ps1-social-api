@@ -59,7 +59,7 @@ app.use("/api/posts", postRoute);
 app.get('*', function (req,res) {
   res.sendFile(buildPath + "index.html");
 });
-
-app.listen(5000, () => {
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
   console.log("Chalega nhi Daudega!");
 });
