@@ -11,7 +11,7 @@ FROM node:16-alpine
 WORKDIR /api
 
 # Copy the dependency files over
-COPY package*.json api/
+COPY package.json /api
 
 # Install dependencies
 RUN npm install
